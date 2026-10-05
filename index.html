@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FlowShield</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>FlowShield</h1>
+  <p id="msg" role="status"></p>
+
+  <section id="auth" hidden>
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email" autocomplete="email" required>
+      <input id="pw" type="password" placeholder="Password (12+ characters)" autocomplete="current-password" required>
+      <div class="row"><button type="submit">Sign in</button><button type="button" id="signUp" class="alt">Create account</button></div>
+    </form>
+  </section>
+
+  <section id="mfa" hidden>
+    <p id="mfaHelp"></p>
+    <img id="qr" alt="MFA QR code" width="180" height="180" hidden>
+    <p id="secret" class="small"></p>
+    <form id="mfaForm">
+      <input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code" required>
+      <button type="submit">Verify</button>
+    </form>
+  </section>
+
+  <section id="app" hidden>
+    <nav class="row">
+      <button id="tabTasks">Tasks</button>
+      <button id="tabAdmin" class="alt" hidden>Admin</button>
+      <button id="signOut" class="alt">Sign out</button>
+    </nav>
+
+    <div id="tasksPane">
+      <form id="taskForm" class="row">
+        <input id="title" maxlength="200" placeholder="Add a task…" required>
+        <button type="submit">Add</button>
+      </form>
+      <ul id="taskList"></ul>
+    </div>
+
+    <div id="adminPane" hidden>
+      <p class="small">Account management only. Task content is not visible to admins.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Email</th><th>Role</th><th>Status</th><th>MFA</th><th>Last sign-in</th><th>Actions</th></tr></thead>
+        <tbody id="accounts"></tbody>
+      </table></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
