@@ -22,7 +22,8 @@ async function route() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) return show("auth");
   const { data: a } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
-  if (a.currentLevel !== "aal2") return startMfa(a.nextLevel === "aal2");   // MFA is mandatory
+  const enrolled = a.nextLevel === "aal2";                      // user has a verified MFA factor
+  if (enrolled && a.currentLevel !== "aal2") return startMfa(true);   // enrolled users must verify
 
   const { data: p, error } = await sb.from("profiles").select("role,status").single();
   if (error || !p) return say("Could not load your profile.");
@@ -30,6 +31,9 @@ async function route() {
     await sb.auth.signOut(); show("auth");
     return say("Your account is suspended. Contact the administrator.");
   }
+  // MFA policy: optional for regular users, MANDATORY for the admin.
+  if (p.role === "admin" && a.currentLevel !== "aal2") return startMfa(false);
+  $("mfaEnable").hidden = enrolled || p.role === "admin";
   show("app");
   $("tabAdmin").hidden = p.role !== "admin";
   tab("tasks");

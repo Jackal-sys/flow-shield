@@ -19,6 +19,9 @@ export function initAuth(route) {
     $("pw").value = ""; say("Account created. Check your email to confirm, then sign in.", false);
   };
   $("signOut").onclick = async () => { await sb.auth.signOut(); route(); };
+  $("mfaOut").onclick = $("signOut").onclick;
+  $("mfaBack").onclick = route;                    // regular users may skip optional MFA setup
+  $("mfaEnable").onclick = () => startMfa(false);  // optional: enable MFA from inside the app
   $("mfaForm").onsubmit = async (e) => {
     e.preventDefault();
     const { error } = await sb.auth.mfa.challengeAndVerify({ factorId, code: $("code").value.trim() });
@@ -27,8 +30,15 @@ export function initAuth(route) {
   };
 }
 
+let starting = false;   // prevents two overlapping enrollments (caused the "already exists" error)
 export async function startMfa(hasFactor) {
-  show("mfa"); $("qr").hidden = true; $("secret").textContent = "";
+  if (starting) return;
+  starting = true;
+  try { await beginMfa(hasFactor); } finally { starting = false; }
+}
+
+async function beginMfa(hasFactor) {
+  say(""); show("mfa"); $("qr").hidden = true; $("secret").textContent = "";
   const { data: l } = await sb.auth.mfa.listFactors();
   if (hasFactor) {
     factorId = l.totp[0].id;
@@ -36,7 +46,7 @@ export async function startMfa(hasFactor) {
     return;
   }
   for (const f of l.all.filter((f) => f.status === "unverified")) await sb.auth.mfa.unenroll({ factorId: f.id });
-  const { data, error } = await sb.auth.mfa.enroll({ factorType: "totp" });
+  const { data, error } = await sb.auth.mfa.enroll({ factorType: "totp", friendlyName: "FlowShield " + Date.now() });
   if (error) return say(error.message);
   factorId = data.id;
   $("qr").src = data.totp.qr_code; $("qr").hidden = false;
