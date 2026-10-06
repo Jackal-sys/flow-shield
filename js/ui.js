@@ -7,6 +7,6 @@ export function el(tag, text, props = {}) {
   if (text != null) e.textContent = text;
   return Object.assign(e, props);
 }
-export const show = (id) => ["auth", "mfa", "app"].forEach((v) => ($(v).hidden = v !== id));
+export const show = (id) => ["auth", "app"].forEach((v) => ($(v).hidden = v !== id));
 export const say = (t, bad = true) => { $("msg").textContent = t || ""; $("msg").className = bad ? "err" : "ok"; };
 export const delBtn = (fn) => el("button", "✕", { className: "alt", ariaLabel: "Delete", onclick: fn });

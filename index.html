@@ -19,24 +19,12 @@
     </form>
   </section>
 
-  <section id="mfa" hidden>
-    <p id="mfaHelp"></p>
-    <img id="qr" alt="MFA QR code" width="180" height="180" hidden>
-    <p id="secret" class="small"></p>
-    <form id="mfaForm">
-      <input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code" required>
-      <button type="submit">Verify</button>
-    </form>
-    <div class="row"><button type="button" id="mfaBack" class="alt">Back</button><button type="button" id="mfaOut" class="alt">Sign out</button></div>
-  </section>
-
-  <section id="app" hidden>
+    <section id="app" hidden>
     <nav class="row">
       <button id="tabTasks">Tasks</button>
       <button id="tabEvents" class="alt">Calendar</button>
       <button id="tabPeriods" class="alt">Protected time</button>
       <button id="tabAdmin" class="alt" hidden>Admin</button>
-      <button id="mfaEnable" class="alt" hidden>Enable MFA</button>
       <button id="signOut" class="alt">Sign out</button>
     </nav>
 
