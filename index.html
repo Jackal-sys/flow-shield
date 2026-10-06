@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>FlowShield</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <main>
@@ -32,6 +32,8 @@
   <section id="app" hidden>
     <nav class="row">
       <button id="tabTasks">Tasks</button>
+      <button id="tabEvents" class="alt">Calendar</button>
+      <button id="tabPeriods" class="alt">Protected time</button>
       <button id="tabAdmin" class="alt" hidden>Admin</button>
       <button id="signOut" class="alt">Sign out</button>
     </nav>
@@ -44,6 +46,39 @@
       <ul id="taskList"></ul>
     </div>
 
+    <div id="eventsPane" hidden>
+      <form id="eventForm">
+        <input id="evTitle" maxlength="200" placeholder="Event title (e.g. Networking class)" required>
+        <div class="row">
+          <select id="evKind" aria-label="Type">
+            <option value="class">Class</option><option value="shift">Work shift</option>
+            <option value="appointment">Appointment</option><option value="other">Other</option>
+          </select>
+          <label class="small">Starts<input id="evStart" type="datetime-local" required></label>
+          <label class="small">Ends<input id="evEnd" type="datetime-local" required></label>
+        </div>
+        <button type="submit">Add event</button>
+      </form>
+      <ul id="eventList"></ul>
+    </div>
+
+    <div id="periodsPane" hidden>
+      <p class="small">Time the planner must never schedule work into: sleep, meals, rest, personal time. For overnight blocks (e.g. sleep 22:00 to 06:00) just set the end earlier than the start.</p>
+      <form id="periodForm">
+        <input id="pdLabel" maxlength="50" placeholder="Label (e.g. Sleep)" required>
+        <div class="row">
+          <select id="pdDay" aria-label="Day">
+            <option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option>
+            <option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option>
+          </select>
+          <label class="small">From<input id="pdStart" type="time" required></label>
+          <label class="small">To<input id="pdEnd" type="time" required></label>
+        </div>
+        <button type="submit">Add protected time</button>
+      </form>
+      <ul id="periodList"></ul>
+    </div>
+
     <div id="adminPane" hidden>
       <p class="small">Account management only. Task content is not visible to admins.</p>
       <div class="scroll"><table>
@@ -53,6 +88,6 @@
     </div>
   </section>
 </main>
-<script type="module" src="app.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
