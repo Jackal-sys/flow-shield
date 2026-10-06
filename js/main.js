@@ -3,16 +3,18 @@ import { sb } from "./supabase.js";
 import { $, show, say } from "./ui.js";
 import { initAuth } from "./auth.js";
 import { loadTasks } from "./tasks.js";
+import { showPlan } from "./plan.js";
 import { loadEvents } from "./events.js";
 import { loadPeriods } from "./periods.js";
 import { loadAdmin } from "./admin.js";
 
-const panes = { tasks: loadTasks, events: loadEvents, periods: loadPeriods, admin: loadAdmin };
+const panes = { tasks: loadTasks, plan: showPlan, events: loadEvents, periods: loadPeriods, admin: loadAdmin };
 function tab(name) {
   for (const k in panes) $(k + "Pane").hidden = k !== name;
   panes[name]();
 }
 $("tabTasks").onclick = () => tab("tasks");
+$("tabPlan").onclick = () => tab("plan");
 $("tabEvents").onclick = () => tab("events");
 $("tabPeriods").onclick = () => tab("periods");
 $("tabAdmin").onclick = () => tab("admin");

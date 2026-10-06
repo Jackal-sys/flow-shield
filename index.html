@@ -22,6 +22,7 @@
     <section id="app" hidden>
     <nav class="row">
       <button id="tabTasks">Tasks</button>
+      <button id="tabPlan" class="alt">Plan</button>
       <button id="tabEvents" class="alt">Calendar</button>
       <button id="tabPeriods" class="alt">Protected time</button>
       <button id="tabAdmin" class="alt" hidden>Admin</button>
@@ -29,11 +30,21 @@
     </nav>
 
     <div id="tasksPane">
-      <form id="taskForm" class="row">
+      <form id="taskForm">
         <input id="title" maxlength="200" placeholder="Add a task…" required>
-        <button type="submit">Add</button>
+        <div class="row">
+          <label class="small">Effort (min)<input id="effort" type="number" min="5" max="1440" step="5" value="30"></label>
+          <label class="small">Due (optional)<input id="due" type="datetime-local"></label>
+          <select id="prio" aria-label="Priority"><option value="1">High</option><option value="2" selected>Medium</option><option value="3">Low</option></select>
+        </div>
+        <button type="submit">Add task</button>
       </form>
       <ul id="taskList"></ul>
+    </div>
+
+    <div id="planPane" hidden>
+      <p class="small">Suggested plan for the next 7 days. These are suggestions only: nothing is added to your calendar, and all planning runs on your device.</p>
+      <div id="planOut"></div>
     </div>
 
     <div id="eventsPane" hidden>
