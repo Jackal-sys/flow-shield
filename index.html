@@ -20,14 +20,7 @@
   </section>
 
     <section id="app" hidden>
-    <nav class="row">
-      <button id="tabTasks">Tasks</button>
-      <button id="tabPlan" class="alt">Plan</button>
-      <button id="tabEvents" class="alt">Calendar</button>
-      <button id="tabPeriods" class="alt">Protected time</button>
-      <button id="tabAdmin" class="alt" hidden>Admin</button>
-      <button id="signOut" class="alt">Sign out</button>
-    </nav>
+    <header class="top"><span id="who" class="small"></span><button id="signOut" class="alt">Sign out</button></header>
 
     <div id="tasksPane">
       <form id="taskForm">
@@ -87,6 +80,14 @@
         <tbody id="accounts"></tbody>
       </table></div>
     </div>
+
+    <nav id="bar" aria-label="Main">
+      <button data-tab="plan"><span class="i">🗓</span>Plan</button>
+      <button data-tab="tasks"><span class="i">✅</span>Tasks<span id="badgeTasks" class="badge"></span></button>
+      <button data-tab="events"><span class="i">📅</span>Calendar</button>
+      <button data-tab="periods"><span class="i">🌙</span>Rest</button>
+      <button data-tab="admin" id="tabAdmin" hidden><span class="i">🛡</span>Admin</button>
+    </nav>
   </section>
 </main>
 <script type="module" src="js/main.js"></script>

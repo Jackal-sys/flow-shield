@@ -10,3 +10,5 @@ export function el(tag, text, props = {}) {
 export const show = (id) => ["auth", "app"].forEach((v) => ($(v).hidden = v !== id));
 export const say = (t, bad = true) => { $("msg").textContent = t || ""; $("msg").className = bad ? "err" : "ok"; };
 export const delBtn = (fn) => el("button", "✕", { className: "alt", ariaLabel: "Delete", onclick: fn });
+// Ask main.js to switch tab (an event avoids circular imports between modules).
+export const goTab = (name) => document.dispatchEvent(new CustomEvent("goto", { detail: name }));

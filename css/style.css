@@ -21,3 +21,15 @@ select{padding:12px;font-size:1rem;border:1px solid var(--line);border-radius:10
 .row select{flex:1;min-width:120px}.row label{flex:1;min-width:140px}.row label input{margin:4px 0 0}
 form{margin-bottom:12px}#taskForm,#authForm,#mfaForm{margin-bottom:12px}
 h3{margin:18px 0 6px;font-size:1rem}li>div{flex:1}
+
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+#app{padding-bottom:84px}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;gap:2px;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+#bar button{flex:1;max-width:120px;background:transparent;color:var(--muted);font-size:.72rem;font-weight:600;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+#bar button .i{font-size:1.3rem;line-height:1}
+#bar button[aria-current=page]{color:var(--accent);background:var(--bg)}
+.badge{position:absolute;top:0;right:12%;min-width:16px;padding:0 5px;border-radius:8px;background:var(--accent);color:var(--on);font-size:.65rem}
+.badge:empty{display:none}.badge.late{background:var(--bad);color:#fff}
+li.late{border-color:var(--bad)}
+.hint{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:1px dashed var(--accent);border-radius:10px;padding:10px;margin-bottom:8px}
+.hint span{flex:1}.hint button{white-space:nowrap}

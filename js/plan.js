@@ -1,6 +1,6 @@
 // Plan tab: loads the user's data, runs the planner on-device and shows explained suggestions.
 import { sb } from "./supabase.js";
-import { $, el, say } from "./ui.js";
+import { $, el, say, goTab } from "./ui.js";
 import { buildPlan } from "./planner.js";
 
 export async function showPlan() {
@@ -16,14 +16,25 @@ export async function showPlan() {
 
   const { blocks, warnings, load } = buildPlan({ tasks: t.data, events: e.data, periods: p.data, now });
   const out = $("planOut"); out.replaceChildren();
+  // Guided next steps: only show what is actually missing.
+  const open = t.data.filter((x) => x.status !== "done");
+  const hints = [];
+  if (!p.data.length) hints.push(["Add protected time (sleep, meals) so the plan protects your rest.", "periods", "Add protected time"]);
+  if (!open.length) hints.push(["Add a task with an effort and a due date to get a plan.", "tasks", "Add a task"]);
+  if (!e.data.length) hints.push(["Add your classes or shifts so work is never planned over them.", "events", "Add events"]);
+  for (const [text, tab, label] of hints) {
+    const box = el("div", null, { className: "hint" });
+    box.append(el("span", text), el("button", label, { onclick: () => goTab(tab) }));
+    out.append(box);
+  }
   for (const w of warnings) out.append(el("p", "⚠ " + w, { className: "err" }));
-  if (!blocks.length) { out.append(el("p", "Nothing to plan. Add tasks with an effort and a due date first.")); return; }
+  if (!blocks.length) { if (!hints.length) out.append(el("p", "Nothing to plan right now.")); return; }
 
   let ul = null, last = "";
   for (const b of blocks) {
     if (b.day !== last) {
       last = b.day;
-      out.append(el("h3", `${b.start.toLocaleDateString([], { weekday: "long", day: "numeric", month: "short" })} · ${((load[b.day] || 0) / 60).toFixed(1)}h planned`));
+      out.append(el("h3", `${b.day === new Date().toDateString() ? "Today" : b.start.toLocaleDateString([], { weekday: "long", day: "numeric", month: "short" })} · ${((load[b.day] || 0) / 60).toFixed(1)}h planned`));
       ul = el("ul"); out.append(ul);
     }
     const time = `${b.start.toLocaleTimeString([], { timeStyle: "short" })} to ${b.end.toLocaleTimeString([], { timeStyle: "short" })}`;
